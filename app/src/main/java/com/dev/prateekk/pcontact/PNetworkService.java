@@ -3,6 +3,7 @@ package com.dev.prateekk.pcontact;
 import java.util.ArrayList;
 
 import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -16,10 +17,10 @@ import retrofit2.http.GET;
 
 public interface PNetworkService {
 
-    String BASE_URL = "http://1gojek-contacts-app.herokuapp.com/";
+    String BASE_URL = "http://gojek-contacts-app.herokuapp.com/";
 
     @GET("contacts.json")
-    Flowable<ArrayList<PContactsRequest>> fetchContacts();
+    Observable<ArrayList<PContactsRequest>> fetchContacts();
 
     class Client {
 
