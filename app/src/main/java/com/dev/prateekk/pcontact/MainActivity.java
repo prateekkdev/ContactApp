@@ -10,15 +10,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
 import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<PContactsRequest> contactsRequests;
+
+    Subscription subscription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,20 +42,68 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Call<ArrayList<PContactsRequest>> contactsCall = PNetworkService.Client.getService().fetchContacts();
-        contactsCall.enqueue(new Callback<ArrayList<PContactsRequest>>() {
-            @Override
-            public void onResponse(Call<ArrayList<PContactsRequest>> call, Response<ArrayList<PContactsRequest>> response) {
-                contactsRequests = response.body();
 
-                Toast.makeText(MainActivity.this, "Successfull", Toast.LENGTH_SHORT).show();
+        PNetworkService.Client.getService().fetchContacts()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Toast.makeText(MainActivity.this, "Error doOnError", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .doOnNext(new Consumer<ArrayList<PContactsRequest>>() {
+                    @Override
+                    public void accept(@NonNull ArrayList<PContactsRequest> pContactsRequests) throws Exception {
+                        Toast.makeText(MainActivity.this, "Success doOnNext", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .subscribe(new Subscriber<ArrayList<PContactsRequest>>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
+                        Toast.makeText(MainActivity.this, "Subscribed", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<PContactsRequest> pContactsRequests) {
+                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Toast.makeText(MainActivity.this, "Complete", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                /*
+
+                .doOnRequest(new LongConsumer() {
+                    @Override
+                    public void accept(long t) throws Exception {
+                        Toast.makeText(MainActivity.this, "doOnRequest", Toast.LENGTH_SHORT).show();
+                    }
+                })
+
+                 */
+
+        /*
+        contactsCall.doOnNext(new Consumer<ArrayList<PContactsRequest>>() {
+            @Override
+            public void accept(@NonNull ArrayList<PContactsRequest> pContactsRequests) throws Exception {
+
             }
-
+        }).doOnError(new Consumer<Throwable>() {
             @Override
-            public void onFailure(Call<ArrayList<PContactsRequest>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+            public void accept(@NonNull Throwable throwable) throws Exception {
+
             }
         });
+        */
     }
 
     @Override

@@ -2,9 +2,11 @@ package com.dev.prateekk.pcontact;
 
 import java.util.ArrayList;
 
+import io.reactivex.Flowable;
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 
@@ -14,10 +16,10 @@ import retrofit2.http.GET;
 
 public interface PNetworkService {
 
-    String BASE_URL = "http://gojek-contacts-app.herokuapp.com/";
+    String BASE_URL = "http://1gojek-contacts-app.herokuapp.com/";
 
     @GET("contacts.json")
-    Call<ArrayList<PContactsRequest>> fetchContacts();
+    Flowable<ArrayList<PContactsRequest>> fetchContacts();
 
     class Client {
 
@@ -28,9 +30,16 @@ public interface PNetworkService {
 
             if (networkServcice == null) {
 
+                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+                // Setting desired log level
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+                httpClient.addInterceptor(logging);
+
                 Retrofit retrofit = new Retrofit.Builder()
-                        .client(new OkHttpClient())
+                        .client(httpClient.build())
                         .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .baseUrl(BASE_URL)
                         .build();
 
