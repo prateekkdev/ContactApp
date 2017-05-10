@@ -2,7 +2,6 @@ package com.dev.prateekk.pcontact;
 
 import java.util.ArrayList;
 
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -10,6 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 /**
  * Created by prateek.kesarwani on 09/05/17.
@@ -20,7 +20,11 @@ public interface PNetworkService {
     String BASE_URL = "http://gojek-contacts-app.herokuapp.com/";
 
     @GET("contacts.json")
-    Observable<ArrayList<PContactsRequest>> fetchContacts();
+    Observable<ArrayList<PContactsListRequest>> fetchContactsList();
+
+    @GET("/contacts/{id}.json ")
+    Observable<PContactRequest> fetchContact(@Path("id") Integer id);
+
 
     class Client {
 

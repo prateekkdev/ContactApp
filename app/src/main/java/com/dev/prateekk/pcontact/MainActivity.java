@@ -14,14 +14,16 @@ import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<PContactsRequest> contactsRequests;
+    ArrayList<PContactsListRequest> contactsRequests;
 
     Subscription subscription;
 
@@ -41,14 +43,35 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        makeCall();
+    }
 
-        PNetworkService.Client.getService().fetchContacts()
+    private void makeCall() {
+
+        // Chaining api calls, example
+
+        PNetworkService.Client.getService().fetchContactsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ArrayList<PContactsRequest>>() {
+                .map(new Function<ArrayList<PContactsListRequest>, Integer>() {
                     @Override
-                    public void accept(@NonNull ArrayList<PContactsRequest> pContactsRequests) throws Exception {
-                        Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    public Integer apply(@NonNull ArrayList<PContactsListRequest> pContactsListRequests) throws Exception {
+                        Toast.makeText(MainActivity.this, "Got lists", Toast.LENGTH_SHORT).show();
+                        return pContactsListRequests.get(0).getId();
+                    }
+                })
+                .observeOn(Schedulers.io())
+                .flatMap(new Function<Integer, Observable<PContactRequest>>() {
+                    @Override
+                    public Observable<PContactRequest> apply(@NonNull Integer integer) throws Exception {
+                        return PNetworkService.Client.getService().fetchContact(integer);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<PContactRequest>() {
+                    @Override
+                    public void accept(@NonNull PContactRequest pContactRequest) throws Exception {
+                        Toast.makeText(MainActivity.this, "Success Again", Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -56,25 +79,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        // Might be used sometime later
-        /*
-
-                        .doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Toast.makeText(MainActivity.this, "Error doOnError", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .doOnNext(new Consumer<ArrayList<PContactsRequest>>() {
-                    @Override
-                    public void accept(@NonNull ArrayList<PContactsRequest> pContactsRequests) throws Exception {
-                        Toast.makeText(MainActivity.this, "Success doOnNext", Toast.LENGTH_SHORT).show();
-                    }
-                })
-
-
-         */
     }
 
     @Override

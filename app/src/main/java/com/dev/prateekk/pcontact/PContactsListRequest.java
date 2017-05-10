@@ -7,7 +7,7 @@ import java.util.Map;
  * Created by prateek.kesarwani on 09/05/17.
  */
 
-public class PContactsRequest {
+public class PContactsListRequest {
 
     private Integer id;
     private String firstName;
@@ -15,7 +15,6 @@ public class PContactsRequest {
     private String profilePic;
     private Boolean favorite;
     private String url;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public Integer getId() {
         return id;
@@ -64,13 +63,4 @@ public class PContactsRequest {
     public void setUrl(String url) {
         this.url = url;
     }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
 }
