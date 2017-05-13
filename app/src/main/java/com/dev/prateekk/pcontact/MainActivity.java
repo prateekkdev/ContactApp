@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.dev.prateekk.pcontact.dagger.*;
+import com.dev.prateekk.pcontact.dagger.PApplicationComponent;
 import com.dev.prateekk.pcontact.network.PContactRequest;
 
 import org.reactivestreams.Subscription;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         // PApplicationComponent component = PApplicationComponent.
 
         PApplicationComponent component = DaggerPApplicationComponent.builder().build();
-        component.getGojekService().fetchContactsList();
+        component.getContactService().fetchContactsList();
 
     }
 

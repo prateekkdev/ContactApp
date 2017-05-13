@@ -12,5 +12,5 @@ import dagger.Component;
 @Component(modules = {PContactServiceModule.class})
 @PApplicationScope
 public interface PApplicationComponent {
-    PContactService getGojekService();
+    PContactService getContactService();
 }
