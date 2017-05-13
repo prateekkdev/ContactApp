@@ -10,25 +10,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.dev.prateekk.pcontact.dagger.PApplicationComponent;
-import com.dev.prateekk.pcontact.network.PContactRequest;
+import com.dev.prateekk.pcontact.network.PContactService;
 
 import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class ContactsListActivity extends AppCompatActivity {
 
     ArrayList<PContactsListRequest> contactsRequests;
 
     Subscription subscription;
+
+    PContactService contactService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +45,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        makeCall();
+        contactService = PApplication.get(this).component().getContactService();
+
+        contactService.fetchContactsList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<ArrayList<PContactsListRequest>>() {
+                    @Override
+                    public void accept(@NonNull ArrayList<PContactsListRequest> pContactsListRequests) throws Exception {
+                        Toast.makeText(ContactsListActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Toast.makeText(ContactsListActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
+    /*
     private void makeCall() {
 
         // Chaining api calls, example
 
-        PApplication.get(this).getContactService().fetchContactsList()
+        contactService.fetchContactsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<ArrayList<PContactsListRequest>, Integer>() {
                     @Override
                     public Integer apply(@NonNull ArrayList<PContactsListRequest> pContactsListRequests) throws Exception {
-                        Toast.makeText(MainActivity.this, "Got lists", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContactsListActivity.this, "Got lists", Toast.LENGTH_SHORT).show();
                         return pContactsListRequests.get(0).getId();
                     }
                 })
@@ -67,28 +82,23 @@ public class MainActivity extends AppCompatActivity {
                 .flatMap(new Function<Integer, Observable<PContactRequest>>() {
                     @Override
                     public Observable<PContactRequest> apply(@NonNull Integer integer) throws Exception {
-                        return PApplication.get(MainActivity.this).getContactService().fetchContact(integer);
+                        return contactService.fetchContact(integer);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<PContactRequest>() {
                     @Override
                     public void accept(@NonNull PContactRequest pContactRequest) throws Exception {
-                        Toast.makeText(MainActivity.this, "Success Again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContactsListActivity.this, "Success Again", Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-                        Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ContactsListActivity.this, "Failure", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        // PApplicationComponent component = PApplicationComponent.
-
-        PApplicationComponent component = DaggerPApplicationComponent.builder().build();
-        component.getContactService().fetchContactsList();
-
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

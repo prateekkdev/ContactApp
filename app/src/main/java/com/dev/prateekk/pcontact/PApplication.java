@@ -3,13 +3,8 @@ package com.dev.prateekk.pcontact;
 import android.app.Application;
 import android.content.Context;
 
-import com.dev.prateekk.pcontact.network.PContactService;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.dev.prateekk.pcontact.dagger.DaggerPApplicationComponent;
+import com.dev.prateekk.pcontact.dagger.PApplicationComponent;
 
 /**
  * Created by prateek.kesarwani on 13/05/17.
@@ -17,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PApplication extends Application {
 
-    private PContactService contactService;
+    private PApplicationComponent applicationComponent;
 
     public static PApplication get(Context context) {
         return (PApplication) context.getApplicationContext();
@@ -26,29 +21,10 @@ public class PApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        // Setting desired log level
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient okHttpClient = new OkHttpClient
-                .Builder()
-                .addInterceptor(logging)
-                .build();
-
-        // Gson gson = new GsonBuilder().create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl("http://gojek-contacts-app.herokuapp.com/")
-                .build();
-
-        contactService = retrofit.create(PContactService.class);
+        applicationComponent = DaggerPApplicationComponent.builder().build();
     }
 
-    public PContactService getContactService() {
-        return contactService;
+    public PApplicationComponent component() {
+        return applicationComponent;
     }
 }
