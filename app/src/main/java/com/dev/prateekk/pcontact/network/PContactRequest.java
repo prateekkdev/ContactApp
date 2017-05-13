@@ -1,4 +1,4 @@
-package com.dev.prateekk.pcontact;
+package com.dev.prateekk.pcontact.network;
 
 public class PContactRequest {
 

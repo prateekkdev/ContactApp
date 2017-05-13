@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dev.prateekk.pcontact.dagger.*;
+import com.dev.prateekk.pcontact.network.PContactRequest;
+
 import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Chaining api calls, example
 
-        PApplication.get(this).getGojekService().fetchContactsList()
+        PApplication.get(this).getContactService().fetchContactsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<ArrayList<PContactsListRequest>, Integer>() {
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 .flatMap(new Function<Integer, Observable<PContactRequest>>() {
                     @Override
                     public Observable<PContactRequest> apply(@NonNull Integer integer) throws Exception {
-                        return PApplication.get(MainActivity.this).getGojekService().fetchContact(integer);
+                        return PApplication.get(MainActivity.this).getContactService().fetchContact(integer);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -79,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Failure", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        // PApplicationComponent component = PApplicationComponent.
+
+        PApplicationComponent component = DaggerPApplicationComponent.builder().build();
+        component.getGojekService().fetchContactsList();
+
     }
 
     @Override

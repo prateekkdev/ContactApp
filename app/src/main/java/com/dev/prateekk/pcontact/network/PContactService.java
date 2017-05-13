@@ -1,4 +1,6 @@
-package com.dev.prateekk.pcontact;
+package com.dev.prateekk.pcontact.network;
+
+import com.dev.prateekk.pcontact.PContactsListRequest;
 
 import java.util.ArrayList;
 
@@ -10,7 +12,7 @@ import retrofit2.http.Path;
  * Created by prateek.kesarwani on 09/05/17.
  */
 
-public interface GojekService {
+public interface PContactService {
 
     @GET("contacts.json")
     Observable<ArrayList<PContactsListRequest>> fetchContactsList();

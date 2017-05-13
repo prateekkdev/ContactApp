@@ -3,6 +3,8 @@ package com.dev.prateekk.pcontact;
 import android.app.Application;
 import android.content.Context;
 
+import com.dev.prateekk.pcontact.network.PContactService;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -15,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PApplication extends Application {
 
-    private GojekService gojekService;
+    private PContactService contactService;
 
     public static PApplication get(Context context) {
         return (PApplication) context.getApplicationContext();
@@ -43,10 +45,10 @@ public class PApplication extends Application {
                 .baseUrl("http://gojek-contacts-app.herokuapp.com/")
                 .build();
 
-        gojekService = retrofit.create(GojekService.class);
+        contactService = retrofit.create(PContactService.class);
     }
 
-    public GojekService getGojekService() {
-        return gojekService;
+    public PContactService getContactService() {
+        return contactService;
     }
 }
