@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Chaining api calls, example
 
-        PNetworkService.Client.getService().fetchContactsList()
+        PApplication.get(this).getGojekService().fetchContactsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(new Function<ArrayList<PContactsListRequest>, Integer>() {
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 .flatMap(new Function<Integer, Observable<PContactRequest>>() {
                     @Override
                     public Observable<PContactRequest> apply(@NonNull Integer integer) throws Exception {
-                        return PNetworkService.Client.getService().fetchContact(integer);
+                        return PApplication.get(MainActivity.this).getGojekService().fetchContact(integer);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
