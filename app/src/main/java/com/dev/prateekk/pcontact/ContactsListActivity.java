@@ -1,15 +1,13 @@
 package com.dev.prateekk.pcontact;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dev.prateekk.pcontact.databinding.ActivityContactsListBinding;
 import com.dev.prateekk.pcontact.network.PContactService;
 
 import org.reactivestreams.Subscription;
@@ -29,15 +27,15 @@ public class ContactsListActivity extends AppCompatActivity {
 
     PContactService contactService;
 
+    ActivityContactsListBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_contacts_list);
+
+        binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -53,6 +51,8 @@ public class ContactsListActivity extends AppCompatActivity {
                 .subscribe(new Consumer<ArrayList<PContactsListRequest>>() {
                     @Override
                     public void accept(@NonNull ArrayList<PContactsListRequest> pContactsListRequests) throws Exception {
+
+
                         Toast.makeText(ContactsListActivity.this, "Success", Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
@@ -62,6 +62,7 @@ public class ContactsListActivity extends AppCompatActivity {
                     }
                 });
     }
+
 
     /*
     private void makeCall() {
@@ -99,26 +100,4 @@ public class ContactsListActivity extends AppCompatActivity {
                 });
     }
     */
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
