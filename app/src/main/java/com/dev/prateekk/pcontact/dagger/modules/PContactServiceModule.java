@@ -21,7 +21,7 @@ public class PContactServiceModule {
 
     @Provides
     @PApplicationScope
-    public PContactService gojekService(Retrofit retrofit) {
+    public PContactService contactService(Retrofit retrofit) {
         return retrofit.create(PContactService.class);
     }
 
