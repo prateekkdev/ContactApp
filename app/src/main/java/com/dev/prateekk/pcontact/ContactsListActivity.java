@@ -4,7 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
 
 import com.dev.prateekk.pcontact.databinding.ActivityContactsListBinding;
@@ -15,8 +15,6 @@ import org.reactivestreams.Subscription;
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class ContactsListActivity extends AppCompatActivity {
@@ -29,40 +27,39 @@ public class ContactsListActivity extends AppCompatActivity {
 
     ActivityContactsListBinding binding;
 
+    ContactsListAdapter contactsListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_contacts_list);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        binding.fab.setOnClickListener(
+                (a) -> Snackbar.make(a,
+                        "Replace with your own action",
+                        Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show());
 
         contactService = PApplication.get(this).component().getContactService();
+
+        PContactsListRequest listRequest = new PContactsListRequest();
+        listRequest.setFirstName("Prateek");
+
+        ArrayList<PContactsListRequest> pContactsListRequests = new ArrayList<>();
+        pContactsListRequests.add(listRequest);
+
+        contactsListAdapter = new ContactsListAdapter(pContactsListRequests);
+
+        binding.mainList.setLayoutManager(new LinearLayoutManager(this));
+        binding.mainList.setAdapter(contactsListAdapter);
 
         contactService.fetchContactsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<ArrayList<PContactsListRequest>>() {
-                    @Override
-                    public void accept(@NonNull ArrayList<PContactsListRequest> pContactsListRequests) throws Exception {
-
-
-                        Toast.makeText(ContactsListActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Toast.makeText(ContactsListActivity.this, "Failure", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .subscribe((a) -> Toast.makeText(ContactsListActivity.this, "Success", Toast.LENGTH_SHORT).show(),
+                        (a) -> Toast.makeText(ContactsListActivity.this, "Failure", Toast.LENGTH_SHORT).show());
     }
-
 
     /*
     private void makeCall() {
