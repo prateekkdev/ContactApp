@@ -1,7 +1,6 @@
 package com.dev.prateekk.pcontact;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by prateek.kesarwani on 09/05/17.
@@ -10,9 +9,16 @@ import java.util.Map;
 public class PContactsListRequest {
 
     private Integer id;
+
+    @SerializedName("first_name")
     private String firstName;
+
+    @SerializedName("last_name")
     private String lastName;
+
+    @SerializedName("profile_pic")
     private String profilePic;
+
     private Boolean favorite;
     private String url;
 

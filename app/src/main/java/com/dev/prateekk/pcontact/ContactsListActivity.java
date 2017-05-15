@@ -57,7 +57,10 @@ public class ContactsListActivity extends AppCompatActivity {
         contactService.fetchContactsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((a) -> Toast.makeText(ContactsListActivity.this, "Success", Toast.LENGTH_SHORT).show(),
+                .subscribe((a) -> {
+                            contactsListAdapter.updateList(a);
+                            Toast.makeText(ContactsListActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                        },
                         (a) -> Toast.makeText(ContactsListActivity.this, "Failure", Toast.LENGTH_SHORT).show());
     }
 

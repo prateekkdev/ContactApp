@@ -27,7 +27,7 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
 
     @Override
     public void onBindViewHolder(ContactsViewHolder holder, int position) {
-        holder.name.setText("" + pContactsListRequests.get(0).getFirstName());
+        holder.name.setText("" + pContactsListRequests.get(position).getFirstName());
     }
 
     @Override
@@ -46,5 +46,6 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
 
     public void updateList(ArrayList<PContactsListRequest> pContactsListRequests) {
         this.pContactsListRequests = pContactsListRequests;
+        notifyDataSetChanged();
     }
 }
