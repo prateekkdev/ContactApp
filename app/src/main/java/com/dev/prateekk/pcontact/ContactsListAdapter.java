@@ -1,5 +1,6 @@
 package com.dev.prateekk.pcontact;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,10 @@ public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapte
     @Override
     public void onBindViewHolder(ContactsViewHolder holder, int position) {
         holder.name.setText("" + pContactsListRequests.get(position).getFirstName());
+
+        holder.name.setOnClickListener(a -> holder.name.getContext()
+                .startActivity(new Intent(holder.name.getContext(), ContactsDetailActivity.class))
+        );
     }
 
     @Override
