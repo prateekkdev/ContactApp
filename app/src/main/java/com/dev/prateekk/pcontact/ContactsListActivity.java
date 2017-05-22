@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
 
+import com.dev.prateekk.pcontact.dagger.ContactsListActivityComponent;
+import com.dev.prateekk.pcontact.dagger.DaggerContactsListActivityComponent;
+import com.dev.prateekk.pcontact.dagger.modules.ContactsListActivityModule;
 import com.dev.prateekk.pcontact.databinding.ActivityContactsListBinding;
 import com.dev.prateekk.pcontact.network.PContactService;
 
@@ -15,6 +18,7 @@ import org.reactivestreams.Subscription;
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ContactsListActivity extends AppCompatActivity {
@@ -28,6 +32,8 @@ public class ContactsListActivity extends AppCompatActivity {
     ActivityContactsListBinding binding;
 
     ContactsListAdapter contactsListAdapter;
+
+    Disposable listDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,19 +55,34 @@ public class ContactsListActivity extends AppCompatActivity {
         ArrayList<PContactsListRequest> pContactsListRequests = new ArrayList<>();
         pContactsListRequests.add(listRequest);
 
-        contactsListAdapter = new ContactsListAdapter(pContactsListRequests);
+        ContactsListActivityComponent component = DaggerContactsListActivityComponent.builder()
+                .contactsListActivityModule(new ContactsListActivityModule(pContactsListRequests))
+                .build();
+        // contactsListAdapter = new ContactsListAdapter(pContactsListRequests);
 
+        contactsListAdapter = component.getContactsAdapter();
         binding.mainList.setLayoutManager(new LinearLayoutManager(this));
         binding.mainList.setAdapter(contactsListAdapter);
 
-        contactService.fetchContactsList()
+        listDisposable = contactService.fetchContactsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((a) -> {
+
+                            // Need to consider here, onStop cases
                             contactsListAdapter.updateList(a);
                             Toast.makeText(ContactsListActivity.this, "Success", Toast.LENGTH_SHORT).show();
                         },
                         (a) -> Toast.makeText(ContactsListActivity.this, "Failure", Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (listDisposable != null && !listDisposable.isDisposed()) {
+            listDisposable.dispose();
+        }
     }
 
     /*

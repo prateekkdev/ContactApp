@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.dev.prateekk.pcontact.dagger.DaggerPApplicationComponent;
 import com.dev.prateekk.pcontact.dagger.PApplicationComponent;
+import com.dev.prateekk.pcontact.network.PContactService;
+
+import javax.inject.Inject;
 
 /**
  * Created by prateek.kesarwani on 13/05/17.
@@ -27,4 +30,5 @@ public class PApplication extends Application {
     public PApplicationComponent component() {
         return applicationComponent;
     }
+
 }
