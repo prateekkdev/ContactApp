@@ -47,7 +47,7 @@ public class ContactsListActivity extends AppCompatActivity {
                         Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show());
 
-        contactService = PApplication.get(this).component().getContactService();
+        contactService = PApplication.get(this).contactService();
 
         PContactsListRequest listRequest = new PContactsListRequest();
         listRequest.setFirstName("Prateek");

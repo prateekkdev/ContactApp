@@ -1,6 +1,6 @@
 package com.dev.prateekk.pcontact.dagger;
 
-import com.dev.prateekk.pcontact.network.PContactService;
+import com.dev.prateekk.pcontact.PApplication;
 import com.dev.prateekk.pcontact.dagger.modules.PContactServiceModule;
 
 import dagger.Component;
@@ -12,5 +12,5 @@ import dagger.Component;
 @Component(modules = {PContactServiceModule.class})
 @PApplicationScope
 public interface PApplicationComponent {
-    PContactService getContactService();
+    void inject(PApplication application);
 }

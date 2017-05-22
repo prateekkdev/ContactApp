@@ -17,6 +17,9 @@ public class PApplication extends Application {
 
     private PApplicationComponent applicationComponent;
 
+    @Inject
+    PContactService contactService;
+
     public static PApplication get(Context context) {
         return (PApplication) context.getApplicationContext();
     }
@@ -25,10 +28,11 @@ public class PApplication extends Application {
     public void onCreate() {
         super.onCreate();
         applicationComponent = DaggerPApplicationComponent.builder().build();
+        applicationComponent.inject(this);
     }
 
-    public PApplicationComponent component() {
-        return applicationComponent;
+    public PContactService contactService() {
+        return contactService;
     }
 
 }
