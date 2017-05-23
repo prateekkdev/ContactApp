@@ -5,7 +5,6 @@ import com.dev.prateekk.pcontact.network.PContactsListRequest;
 import java.util.ArrayList;
 
 import dagger.Module;
-import dagger.Provides;
 
 /**
  * Created by prateek.kesarwani on 22/05/17.
@@ -21,9 +20,11 @@ public class ContactsListActivityModule {
         this.requestsList = requestsList;
     }
 
+    /*
     @Provides
     @ContactsListActivityScope
     public ContactsListAdapter contactsListActivity() {
         return new ContactsListAdapter(requestsList);
     }
+    */
 }

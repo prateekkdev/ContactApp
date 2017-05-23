@@ -59,7 +59,6 @@ public class ContactsListActivity extends AppCompatActivity {
         pContactsListRequests.add(listRequest);
 
         ContactsListActivityComponent component = DaggerContactsListActivityComponent.builder()
-                .contactsListActivityModule(new ContactsListActivityModule(pContactsListRequests))
                 .build();
         component.inject(this);
         // contactsListAdapter = new ContactsListAdapter(pContactsListRequests);

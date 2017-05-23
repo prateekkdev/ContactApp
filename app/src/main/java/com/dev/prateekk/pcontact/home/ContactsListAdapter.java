@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dev.prateekk.pcontact.network.PContactsListRequest;
 import com.dev.prateekk.pcontact.R;
 import com.dev.prateekk.pcontact.details.ContactsDetailActivity;
+import com.dev.prateekk.pcontact.network.PContactsListRequest;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 /**
  * Created by prateek.kesarwani on 13/05/17.
@@ -19,6 +21,11 @@ import java.util.ArrayList;
 public class ContactsListAdapter extends RecyclerView.Adapter<ContactsListAdapter.ContactsViewHolder> {
 
     private ArrayList<PContactsListRequest> pContactsListRequests;
+
+    @Inject
+    public ContactsListAdapter() {
+        pContactsListRequests = new ArrayList<>();
+    }
 
     public ContactsListAdapter(ArrayList<PContactsListRequest> pContactsListRequests) {
         this.pContactsListRequests = pContactsListRequests;
