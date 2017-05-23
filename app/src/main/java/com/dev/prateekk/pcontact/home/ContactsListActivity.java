@@ -17,6 +17,8 @@ import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -31,6 +33,7 @@ public class ContactsListActivity extends AppCompatActivity {
 
     ActivityContactsListBinding binding;
 
+    @Inject
     ContactsListAdapter contactsListAdapter;
 
     Disposable listDisposable;
@@ -58,9 +61,10 @@ public class ContactsListActivity extends AppCompatActivity {
         ContactsListActivityComponent component = DaggerContactsListActivityComponent.builder()
                 .contactsListActivityModule(new ContactsListActivityModule(pContactsListRequests))
                 .build();
+        component.inject(this);
         // contactsListAdapter = new ContactsListAdapter(pContactsListRequests);
 
-        contactsListAdapter = component.getContactsAdapter();
+        // contactsListAdapter = component.getContactsAdapter();
         binding.mainList.setLayoutManager(new LinearLayoutManager(this));
         binding.mainList.setAdapter(contactsListAdapter);
 

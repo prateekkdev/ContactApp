@@ -9,5 +9,7 @@ import dagger.Component;
 @ContactsListActivityScope
 @Component(modules = {ContactsListActivityModule.class})
 public interface ContactsListActivityComponent {
-    ContactsListAdapter getContactsAdapter();
+    // ContactsListAdapter getContactsAdapter();
+
+    void inject(ContactsListActivity activity);
 }
