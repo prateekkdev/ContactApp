@@ -1,7 +1,5 @@
 package com.dev.prateekk.pcontact.network;
 
-import com.dev.prateekk.pcontact.PContactsListRequest;
-
 import java.util.ArrayList;
 
 import io.reactivex.Observable;

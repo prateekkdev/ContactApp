@@ -1,6 +1,4 @@
-package com.dev.prateekk.pcontact.dagger.modules;
-
-import com.dev.prateekk.pcontact.dagger.PApplicationScope;
+package com.dev.prateekk.pcontact.application;
 
 import dagger.Module;
 import dagger.Provides;

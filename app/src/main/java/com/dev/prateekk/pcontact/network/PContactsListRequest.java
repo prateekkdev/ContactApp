@@ -1,4 +1,4 @@
-package com.dev.prateekk.pcontact;
+package com.dev.prateekk.pcontact.network;
 
 import com.google.gson.annotations.SerializedName;
 

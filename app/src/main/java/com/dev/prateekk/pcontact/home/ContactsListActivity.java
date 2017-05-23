@@ -1,4 +1,4 @@
-package com.dev.prateekk.pcontact;
+package com.dev.prateekk.pcontact.home;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -7,11 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.widget.Toast;
 
-import com.dev.prateekk.pcontact.dagger.ContactsListActivityComponent;
-import com.dev.prateekk.pcontact.dagger.DaggerContactsListActivityComponent;
-import com.dev.prateekk.pcontact.dagger.modules.ContactsListActivityModule;
+import com.dev.prateekk.pcontact.R;
+import com.dev.prateekk.pcontact.application.PApplication;
 import com.dev.prateekk.pcontact.databinding.ActivityContactsListBinding;
 import com.dev.prateekk.pcontact.network.PContactService;
+import com.dev.prateekk.pcontact.network.PContactsListRequest;
 
 import org.reactivestreams.Subscription;
 

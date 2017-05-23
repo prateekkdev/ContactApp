@@ -1,4 +1,4 @@
-package com.dev.prateekk.pcontact.dagger;
+package com.dev.prateekk.pcontact.home;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

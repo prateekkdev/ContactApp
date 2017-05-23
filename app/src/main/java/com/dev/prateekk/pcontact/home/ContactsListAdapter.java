@@ -1,10 +1,14 @@
-package com.dev.prateekk.pcontact;
+package com.dev.prateekk.pcontact.home;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.dev.prateekk.pcontact.network.PContactsListRequest;
+import com.dev.prateekk.pcontact.R;
+import com.dev.prateekk.pcontact.details.ContactsDetailActivity;
 
 import java.util.ArrayList;
 

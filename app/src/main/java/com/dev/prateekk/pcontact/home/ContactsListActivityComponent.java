@@ -1,7 +1,4 @@
-package com.dev.prateekk.pcontact.dagger;
-
-import com.dev.prateekk.pcontact.ContactsListAdapter;
-import com.dev.prateekk.pcontact.dagger.modules.ContactsListActivityModule;
+package com.dev.prateekk.pcontact.home;
 
 import dagger.Component;
 

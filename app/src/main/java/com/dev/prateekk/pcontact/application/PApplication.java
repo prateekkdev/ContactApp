@@ -1,10 +1,8 @@
-package com.dev.prateekk.pcontact;
+package com.dev.prateekk.pcontact.application;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.dev.prateekk.pcontact.dagger.DaggerPApplicationComponent;
-import com.dev.prateekk.pcontact.dagger.PApplicationComponent;
 import com.dev.prateekk.pcontact.network.PContactService;
 
 import javax.inject.Inject;
@@ -34,5 +32,4 @@ public class PApplication extends Application {
     public PContactService contactService() {
         return contactService;
     }
-
 }

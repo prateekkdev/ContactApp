@@ -1,7 +1,4 @@
-package com.dev.prateekk.pcontact.dagger;
-
-import com.dev.prateekk.pcontact.PApplication;
-import com.dev.prateekk.pcontact.dagger.modules.PContactServiceModule;
+package com.dev.prateekk.pcontact.application;
 
 import dagger.Component;
 

@@ -1,6 +1,5 @@
-package com.dev.prateekk.pcontact.dagger.modules;
+package com.dev.prateekk.pcontact.application;
 
-import com.dev.prateekk.pcontact.dagger.PApplicationScope;
 import com.dev.prateekk.pcontact.network.PContactService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

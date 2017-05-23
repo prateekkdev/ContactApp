@@ -1,8 +1,6 @@
-package com.dev.prateekk.pcontact.dagger.modules;
+package com.dev.prateekk.pcontact.home;
 
-import com.dev.prateekk.pcontact.ContactsListAdapter;
-import com.dev.prateekk.pcontact.PContactsListRequest;
-import com.dev.prateekk.pcontact.dagger.ContactsListActivityScope;
+import com.dev.prateekk.pcontact.network.PContactsListRequest;
 
 import java.util.ArrayList;
 
